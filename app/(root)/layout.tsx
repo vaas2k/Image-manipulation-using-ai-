@@ -1,6 +1,5 @@
 "use client";
 import { Grid, GridItem } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
 import Navbar from "@/components/headers/navbar";
 import Sidebar from "@/components/headers/sidebar";
 import { useUser } from "@clerk/nextjs";

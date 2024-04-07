@@ -6,12 +6,10 @@ import Edits from "@/components/shared/comm_edits";
 import {
   SignInButton,
   SignUpButton,
-  useUser,useAuth
+  useUser
 } from "@clerk/nextjs";
-import {useState,useEffect,useMemo, use} from 'react'
-import { useAppDispatch, useAppSelector } from "./hooks";
+import {useEffect} from 'react'
 import { useRouter } from "next/navigation";
-import { setUser } from "@/store/slices/userSlice";
 import { createUser } from "@/lib/actions/userActions";
 import { CreateUser } from "@/types/types";
 
@@ -38,11 +36,14 @@ const Home = () => {
   },[isSignedIn,user]);
   
 
-  if(isSignedIn){
-    router.push('/home');
-    
-  }else{
-    router.push('/');
+  try {
+    if (isSignedIn) {
+      router.push('/home');
+    } else {
+      router.push('/');
+    }
+  } catch (error) {
+    console.error('Error during navigation:', error);
   }
 
   return (
