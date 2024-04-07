@@ -8,18 +8,35 @@ import {
   SignUpButton,
   useUser,useAuth
 } from "@clerk/nextjs";
-import {useState,useEffect} from 'react'
-import { useAppDispatch } from "./hooks";
+import {useState,useEffect,useMemo, use} from 'react'
+import { useAppDispatch, useAppSelector } from "./hooks";
 import { useRouter } from "next/navigation";
+import { setUser } from "@/store/slices/userSlice";
+import { createUser } from "@/lib/actions/userActions";
+import { CreateUser } from "@/types/types";
 
 
 const Home = () => {
 
   const router = useRouter();
-  const { isSignedIn, isLoaded, user } = useUser();
+  const { isSignedIn,isLoaded, user } = useUser();
+  
 
   if(isSignedIn){
     router.push('/home');
+    const obj: CreateUser = {
+      username: user?.username,
+      clerkId: user?.id,
+      email: user?.emailAddresses[0].emailAddress,
+      photo: user?.imageUrl,
+      firstName : user?.firstName,
+      lastName : user?.lastName,
+      credits : null
+    };
+    createUser(user.id,obj);
+    
+  }else{
+    router.push('/');
   }
 
   return (

@@ -1,52 +1,35 @@
 "use client";
+import b from "./bar.module.css";
 import { useState, useEffect } from "react";
 import { ReactElement } from "react";
 import { Button } from "../ui/button";
-import { Container, Flex, Box, Text, Stack,Divider } from "@chakra-ui/react";
-import { SignOutButton } from "@clerk/nextjs";
-import {
-  Input,
-  InputGroup,
-  InputAddon,
-  InputRightElement,
-} from "@chakra-ui/react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { ChevronRight, Search } from "lucide-react";
+import { Flex, Box, Text, Stack, Divider } from "@chakra-ui/react";
+import { SignOutButton, UserButton } from "@clerk/nextjs";
+import { Sheet,SheetContent,SheetHeader,SheetTitle,SheetTrigger,} from "@/components/ui/sheet";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AlignLeft } from "lucide-react";
+import { LogOut} from "lucide-react";
+import { sidelinks } from "./sidebar";
+import { resetUser } from "@/store/slices/userSlice";
+import { useAppDispatch } from "@/app/hooks";
+import { useWidth } from "@/lib/widthCheck";
 
 const Navbar = (): ReactElement => {
-
+  const router = useRouter();
+  const [toggle , setToggle ] = useState('Home');
   const [width, setWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    function chngWidth() {
-      setWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", chngWidth);
-    return () => window.removeEventListener("resize", chngWidth);
-  }, []);
+  const w = useWidth();
+
+  const dispatch = useAppDispatch();
+
+  function handleReset(){
+    dispatch(resetUser());
+    router.push("/");
+  }
 
   return (
     <>
-      {width < 765 && (
-        <Flex p={5} alignItems={"center"} justifyContent={"space-between"}>
-          <Box>
-            <Text>Logo</Text>
-          </Box>
-          <InputGroup width={"170px"}>
-            <Input type="text" placeholder="search" />
-            <InputRightElement>
-              <Search />
-            </InputRightElement>
-          </InputGroup>
-        </Flex>
-      )}
       {width > 765 ? (
         <Flex justifyContent={"space-between"} alignItems={"center"} pt={8}>
           <Box pl={12}>
@@ -54,35 +37,76 @@ const Navbar = (): ReactElement => {
           </Box>
 
           <Flex pr={12} gap={5}>
-            <Button> <Link href='/'><SignOutButton/></Link>  </Button>
+            <Button onClick={handleReset}>
+              <SignOutButton />
+            </Button>
           </Flex>
         </Flex>
       ) : (
         <Sheet>
-          <Flex style={{ marginTop: "250px", opacity: "80%" }}>
-            <SheetTrigger>
-              <ChevronRight />
-            </SheetTrigger>
-          </Flex>
+          {width < 765 && (
+            <Flex p={5} alignItems={"center"} justifyContent={"space-between"}>
+              <Flex style={{ opacity: "80%" }}>
+                <SheetTrigger>
+                  <AlignLeft size={"20px"} />
+                </SheetTrigger>
+              </Flex>
+              <Box>
+                <Text>Logo</Text>
+              </Box>
+
+              <UserButton />
+            </Flex>
+          )}
           <SheetContent side={"left"}>
-            <SheetHeader className="pb-10"> 
+            <SheetHeader className="pb-10">
               <SheetTitle>Logo</SheetTitle>
             </SheetHeader>
-            <Flex direction={'column'} gap={20}>
+            <Flex direction={"column"} gap={20}>
               <Stack gap={5}>
-              <Button>Option1</Button>
-                <Button>Option2</Button>
+                {sidelinks.map((i) => {
+                  return (
+                    <Link href={i.link}>
+                      <div
+                        className={
+                          toggle === i.type
+                            ? b.side_bar_button_clicked
+                            : b.side_bar_button
+                        }
+                        onClick={() => {
+                          setToggle(i.type);
+                        }}
+                      >
+                        {i.logo}
+                        <p style={{ marginTop: "2.5px", marginLeft: "8px" }}>
+                          {i.name}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
               </Stack>
-              <Stack direction={"column"} >
-              {<><Button>Sign In</Button>
-            <Button>Sign Up</Button> </>}
-            <Button>Logout </Button>
+              <Stack direction={"column"}>
+                <div
+                  className={
+                    toggle === "out"
+                      ? b.side_bar_button_clicked
+                      : b.side_bar_button
+                  }
+                  onClick={() => {
+                    setToggle("out");
+                  }}
+                >
+                  <LogOut />
+                  <p style={{ marginTop: "2.5px", marginLeft: "8px" }}>
+                    <SignOutButton />
+                  </p>
+                </div>
               </Stack>
             </Flex>
           </SheetContent>
         </Sheet>
       )}
-      
     </>
   );
 };

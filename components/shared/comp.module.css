@@ -1,0 +1,21 @@
+
+
+.Div1{
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    flex-direction: column;
+    cursor: pointer;
+}
+.Div2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 35px;
+    border: 1px solid;
+    border-radius: 10px;
+    
+}

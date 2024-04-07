@@ -1,17 +1,29 @@
 'use client'
-import { useEffect, useState } from "react";
 import Home1 from "../page";
-import { useAppDispatch } from "@/app/hooks";
 import { useUser } from "@clerk/nextjs";
+import { useEffect } from "react";
+import { getUserById } from "@/lib/actions/userActions";
+import { useAppDispatch } from "@/app/hooks";
+import { setUser } from "@/store/slices/userSlice";
 
-const ShowHome = () => {
-    const { user, isSignedIn } = useUser();
-
-    console.log(user?.id,user?.imageUrl,user?.fullName);
-
+export const HomePage = () => {
+    const {user} = useUser();
+    const dispatch = useAppDispatch();
+    useEffect(()=>{
+        async function getUSer(){
+            if(user?.id != undefined){
+                const getUser = await getUserById(user?.id);
+                console.log(getUser);
+                window.sessionStorage.setItem('user',JSON.stringify(getUser));
+            }
+        }
+        getUSer();
+    },[user])
     return (
-        <Home1 />
-    );
-};
+        <div>
+           <Home1/> 
+        </div>
+    )
+} 
 
-export default ShowHome;
+export default HomePage;

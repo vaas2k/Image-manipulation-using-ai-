@@ -1,13 +1,14 @@
-import { Container } from "@chakra-ui/react";
-import { ReactElement } from "react";
+import { Container } from "@chakra-ui/react"
+import { UserProfile } from "@clerk/nextjs";
 
-const Profile = (): ReactElement => {
+const Profile = () => {
 
-    return(
-        <Container>
-         profile
+    return (
+        <Container pb={5} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            //Profile
         </Container>
     )
 }
+
 
 export default Profile;

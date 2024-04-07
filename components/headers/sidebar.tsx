@@ -15,21 +15,43 @@ import {
 import { Scan } from "lucide-react";
 import b from "./bar.module.css";
 import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
+import { useWidth } from "@/lib/widthCheck";
+import { useUser } from "@clerk/nextjs";
+import { userAgent } from "next/server";
 
 const Sidebar = () => {
-  const [width, setWidth] = useState(window.innerWidth);
-  const [toggle , setToggle ] = useState('Home');
+  const {user} = useUser();
+  const w = useWidth();
+  const [toggle, setToggle] = useState<any>("");
+  let prolinks = [
+    {
+      link: "/profile",
+      name: "Profile",
+      description: "Profile",
+      type: "Profile",
+      logo: <UserRound />,
+    },
+    {
+      link: "/credits",
+      name: "Buy Credits",
+      description: "Credits",
+      type: "Credits",
+      logo: <Coins />,
+    },
+    {
+      link:'',
+      name: user?.firstName,
+      description: "User Profile",
+      type: user?.firstName,
+      logo: <UserButton />,
+    },
+  ];
 
-  useEffect(() => {
-    function chngWidth() {
-      setWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", chngWidth);
-    return () => window.removeEventListener("resize", chngWidth);
-  }, []);
+  
   return (
     <>
-      {width > 765 && (
+      {w > 765 && (
         <Flex
           style={{ paddingTop: "50px", height: "100%", gap: "100px" }}
           p={5}
@@ -37,90 +59,101 @@ const Sidebar = () => {
           width={"300px"}
         >
           <Flex gap={4} pl={5} direction={"column"} alignItems={"flex-start"}>
-            <Link href={'/home'}>
-            <div className={toggle === 'Home' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('Home')}}
-            >
-              <Home />
-              Home
-            </div>
-              
-              </Link>
-             <Link href={'/restore'}>
-            <div className={toggle === 'Restore' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('Restore')}}
-            >
-              <Image />
-              Image Restore
-            </div>
+          {sidelinks.map((i)=>{
+              return(
+                <Link href={i.link}>
+              <div
+                className={
+                  toggle === i.type
+                    ? b.side_bar_button_clicked
+                    : b.side_bar_button
+                }
+                onClick={() => {
+                  setToggle(i.type);
+                }}
+              >
+                {i.logo}
+                <p style={{ marginTop: "2.5px", marginLeft: "8px" }}>
+                  {i.name}
+                </p>
+              </div>
             </Link>
-
-            <Link href={'/image_fill'}>  
-            <div className={toggle === 'Fill' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('Fill')}}
-            >
-              <Sparkles />
-              Generative Fill
-            </div>
-            </Link>
-
-
-            <Link href='/object_remove'>
-            <div className={toggle === 'O-remove' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('O-remove')}}
-            >
-              <Scan />
-              Object Remove
-            </div>
-            </Link>
-
-
-            <Link href={'/recolor'}>
-            <div className={toggle === 'recolor' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('recolor')}}
-            >
-              <SlidersHorizontal />
-              Object Recolor
-            </div>
-            </Link>
-
-
-            <Link href={'/background_remove'}>
-            <div className={toggle === 'remove' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('remove')}}
-            >
-              <Aperture />
-              Background Remove
-            </div>
-            </Link>
-
+              )
+            })}
           </Flex>
           <Flex direction={"column"} gap={6} pl={5} alignItems={"flex-start"}>
-          
-          <Link href='/profile'>
-          <div className={toggle === 'profile' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('profile')}}
-            >
-              <UserRound />
-              Profile
-            </div>
-          </Link>
-
-          <Link href={'/credits'}>
-            <div className={toggle === 'credits' ? b.side_bar_button_clicked : b.side_bar_button} 
-            onClick= {()=>{setToggle('credits')}}
-            >
-              <Coins />
-              Buy Credits
-            </div>
-          </Link>
+            {prolinks.map((i)=>{
+              return(
+                <Link href={i.link}>
+              <div
+                className={
+                  toggle === i.type
+                    ? b.side_bar_button_clicked
+                    : b.side_bar_button
+                }
+                onClick={() => {
+                  setToggle(i.type);
+                }}
+              >
+                {i.logo}
+                <p style={{ marginTop: "2.5px", marginLeft: "8px" }}>
+                  {i.name}
+                </p>
+              </div>
+            </Link>
+              )
+            })}
           </Flex>
         </Flex>
-
       )}
-
     </>
   );
 };
+
+export const sidelinks = [
+  {
+    link: "/home",
+    name: "Home",
+    description: "Home",
+    type: "home",
+    logo: <Home />,
+  },
+  {
+    link: "/transformations/restore",
+    name: "Restore",
+    description: "Restore",
+    type: "restore",
+    logo: <Image />,
+  },
+  {
+    link: "/transformations/generative_fill",
+    name: "Generative fill",
+    description: "Generative_fill",
+    type: "Generative_fill",
+    logo: <Sparkles />,
+  },
+  {
+    link: "/transformations/object_remove",
+    name: "Object Remove",
+    description: "Object Remove",
+    type: "Object Remove",
+    logo: <Scan />,
+  },
+  {
+    link: "/transformations/recolor",
+    name: "Object Recolor",
+    description: "Object Recolor",
+    type: "Object Recolor",
+    logo: <SlidersHorizontal />,
+  },
+  {
+    link: "/transformations/background_remove",
+    name: "Background Remove",
+    description: "Background Remove",
+    type: "Background Remove",
+    logo: <Aperture />,
+  },
+];
+
 
 export default Sidebar;
