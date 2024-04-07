@@ -6,7 +6,7 @@ import { getUserById } from "@/lib/actions/userActions";
 import { useAppDispatch } from "@/app/hooks";
 import { setUser } from "@/store/slices/userSlice";
 
-export const HomePage = () => {
+const HomePage = () => {
     const {user} = useUser();
     const dispatch = useAppDispatch();
     useEffect(()=>{
