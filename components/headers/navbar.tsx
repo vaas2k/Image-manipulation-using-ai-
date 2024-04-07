@@ -37,9 +37,7 @@ const Navbar = (): ReactElement => {
           </Box>
 
           <Flex pr={12} gap={5}>
-            <Button onClick={handleReset}>
-              <SignOutButton />
-            </Button>
+              <UserButton />
           </Flex>
         </Flex>
       ) : (

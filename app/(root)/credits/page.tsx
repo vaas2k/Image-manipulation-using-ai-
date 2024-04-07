@@ -2,9 +2,7 @@
 import Subscription_Card from "@/components/shared/subcr_banner";
 import { Container, Stack, Text } from "@chakra-ui/react";
 import { plans } from "@/constants/constants";
-import { useWidth } from "@/lib/widthCheck";
 import { useState, useEffect } from "react";
-import { useAppSelector } from "@/app/hooks";
 
 const Credits = () => {
   

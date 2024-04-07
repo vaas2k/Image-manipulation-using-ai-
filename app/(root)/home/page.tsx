@@ -5,9 +5,11 @@ import { useEffect } from "react";
 import { getUserById } from "@/lib/actions/userActions";
 import { useAppDispatch } from "@/app/hooks";
 import { setUser } from "@/store/slices/userSlice";
+import { useWidth } from "@/lib/widthCheck";
 
 const HomePage = () => {
     const {user} = useUser();
+    const w = useWidth();
     const dispatch = useAppDispatch();
     useEffect(()=>{
         async function getUSer(){
@@ -21,7 +23,9 @@ const HomePage = () => {
     },[user])
     return (
         <div>
+            {w}
            <Home1/> 
+
         </div>
     )
 } 

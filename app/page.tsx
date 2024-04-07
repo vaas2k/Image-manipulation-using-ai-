@@ -20,20 +20,26 @@ const Home = () => {
 
   const router = useRouter();
   const { isSignedIn,isLoaded, user } = useUser();
+
+  useEffect(()=>{
+    if(isSignedIn){
+
+      const obj: CreateUser = {
+        username: user?.username,
+        clerkId: user?.id,
+        email: user?.emailAddresses[0].emailAddress,
+        photo: user?.imageUrl,
+        firstName : user?.firstName,
+        lastName : user?.lastName,
+        credits : null
+      };
+      createUser(user.id,obj);
+    }
+  },[isSignedIn,user]);
   
 
   if(isSignedIn){
     router.push('/home');
-    const obj: CreateUser = {
-      username: user?.username,
-      clerkId: user?.id,
-      email: user?.emailAddresses[0].emailAddress,
-      photo: user?.imageUrl,
-      firstName : user?.firstName,
-      lastName : user?.lastName,
-      credits : null
-    };
-    createUser(user.id,obj);
     
   }else{
     router.push('/');

@@ -15,7 +15,7 @@ import {
 import { Scan } from "lucide-react";
 import b from "./bar.module.css";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { useWidth } from "@/lib/widthCheck";
 import { useUser } from "@clerk/nextjs";
 import { userAgent } from "next/server";
@@ -38,13 +38,6 @@ const Sidebar = () => {
       description: "Credits",
       type: "Credits",
       logo: <Coins />,
-    },
-    {
-      link:'',
-      name: user?.firstName,
-      description: "User Profile",
-      type: user?.firstName,
-      logo: <UserButton />,
     },
   ];
 
