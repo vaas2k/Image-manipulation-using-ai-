@@ -139,7 +139,7 @@ export const ImageForm = ({configs}:any) => {
       </Stack>
 
       <Flex
-        direction={w > 765 ? "row" : "column"}
+        direction={w ? "row" : "column"}
         gap={"40px"}
         alignItems={"flex-start"}
         justifyContent={"space-between"}

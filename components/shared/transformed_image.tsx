@@ -32,7 +32,7 @@ export const Transformed_Image = ( {isTransforming} : any ) => {
               <Skeleton
                 className="rounded-xl"
                 style={{
-                  width: w > 765 ? "370px" : "250px",
+                  width: !w ? "370px" : "250px",
                   height: "80px",
                 }}
               />
@@ -48,7 +48,7 @@ export const Transformed_Image = ( {isTransforming} : any ) => {
             <div
               className={up.Div1}
               style={{
-                width: w > 765 ? "370px" : "250px",
+                width: w ? "370px" : "250px",
                 height: "240px",
               }}
             >
@@ -59,7 +59,7 @@ export const Transformed_Image = ( {isTransforming} : any ) => {
           ) : (
             <div className="cursor-pointer overflow-hidden rounded-[10px]">
               <CldImage
-                width={w > 765 ? 370 : 250}
+                width={w ? 370 : 250}
                 height={imageState.height}
                 src={imageState.transformation_url}
                 alt="image"

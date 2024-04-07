@@ -18,7 +18,6 @@ import Link from "next/link";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { useWidth } from "@/lib/widthCheck";
 import { useUser } from "@clerk/nextjs";
-import { userAgent } from "next/server";
 
 const Sidebar = () => {
   const {user} = useUser();
@@ -44,7 +43,7 @@ const Sidebar = () => {
   
   return (
     <>
-      {w > 765 && (
+      {w && (
         <Flex
           style={{ paddingTop: "50px", height: "100%", gap: "100px" }}
           p={5}

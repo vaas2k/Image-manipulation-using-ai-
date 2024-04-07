@@ -18,7 +18,7 @@ const Layout = ({
   return (
     <Grid
       templateAreas={
-        w > 765
+        w
           ? `"header header"
        "nav main"
        "nav main"`
@@ -41,12 +41,12 @@ const Layout = ({
       </GridItem>
       <GridItem
         pr="6"
-        mt={w > 765 ? 5 : 0}
+        mt={w ? 5 : 0}
         pl="4"
         style={{
           paddingTop: "30px",
           overflow: "auto",
-          height: w > 765 ? "650px" : "",
+          height: w ? "650px" : "",
         }}
         area={"main"}
       >

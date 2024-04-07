@@ -6,14 +6,14 @@ import {useState , useEffect } from 'react'
 
 const Header = () => {
 
-    const w = useWidth();
+    const [w] = useMediaQuery('(min-width: 765px)');
 
     return (
-        <Container pt={6} maxW={w > 765 ? '80%' : '100%'}>
+        <Container pt={6} maxW={w ? '80%' : '100%'}>
             <Image
              src='/bgheader.jpg'
              width={'100%'}
-             height={w > 765 ? '350px' : '200px'}
+             height={w ? '350px' : '200px'}
              style={{objectFit:'cover',borderRadius:'15px'}}
              />
         </Container>

@@ -1,18 +1,6 @@
-'use client' 
-import { useState,useEffect } from "react";
+import { useMediaQuery } from "@chakra-ui/react";
 
 export const useWidth = () => {
-
-    const [width, setWidth] = useState(window.innerWidth);
-    useEffect(() => {
-      function chngWidth() {
-        setWidth(window.innerWidth);
-      }
-      window.addEventListener("resize", chngWidth);
-      return () => {window.removeEventListener("resize", chngWidth)
-
-      return width;
-      };
-    }, []);
-    
-}
+  const [w] = useMediaQuery('(min-width: 765px)');
+  return w;
+  }

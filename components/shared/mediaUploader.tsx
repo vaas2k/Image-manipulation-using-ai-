@@ -57,7 +57,7 @@ export const MediaUploader = ({selectedImage,setSelectedImage} : any ) => {
                   <div
                     className={up.Div1}
                     style={{
-                      width: w > 765 ? "370px" : "250px",
+                      width: w ? "370px" : "250px",
                       height: "240px",
                     }}
                     onClick={() => {
@@ -73,7 +73,7 @@ export const MediaUploader = ({selectedImage,setSelectedImage} : any ) => {
                   <Text pb={5}>Original</Text>
                   <div className="cursor-pointer overflow-hidden rounded-[10px]">
                 <CldImage 
-                  width={w > 765 ? 370 : 250}
+                  width={w ? 370 : 250}
                   height={selectedImage.height}
                   src={selectedImage.image}
                   alt="image"

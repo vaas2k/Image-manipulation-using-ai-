@@ -18,7 +18,6 @@ import { useWidth } from "@/lib/widthCheck";
 const Navbar = (): ReactElement => {
   const router = useRouter();
   const [toggle , setToggle ] = useState('Home');
-  const [width, setWidth] = useState(window.innerWidth);
   const w = useWidth();
 
   const dispatch = useAppDispatch();
@@ -30,7 +29,7 @@ const Navbar = (): ReactElement => {
 
   return (
     <>
-      {width > 765 ? (
+      {w ? (
         <Flex justifyContent={"space-between"} alignItems={"center"} pt={8}>
           <Box pl={12}>
             <Text>Logo</Text>
@@ -42,7 +41,7 @@ const Navbar = (): ReactElement => {
         </Flex>
       ) : (
         <Sheet>
-          {width < 765 && (
+          {!w && (
             <Flex p={5} alignItems={"center"} justifyContent={"space-between"}>
               <Flex style={{ opacity: "80%" }}>
                 <SheetTrigger>

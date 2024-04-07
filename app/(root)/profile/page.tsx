@@ -23,12 +23,12 @@ const Profile = () => {
       </Text>
       <Container className="items-center justify-center" maxW={"90%"}>
         <Stack
-          direction={w > 1085 ? "row" : "column"}
+          direction={w ? "row" : "column"}
           className="flex items-center justify-between"
         >
           <div
             className="flex gap-[20px] items-start justify-center flex-col border-2 p-[20px] rounded-lg"
-            style={{ width: w < 765 ? "250px" : "380px" }}
+            style={{ width: !w ? "250px" : "380px" }}
           >
             <Text>Credits</Text>
             <HStack>
@@ -39,7 +39,7 @@ const Profile = () => {
 
           <div
             className="flex gap-[20px] items-start justify-center flex-col border-2 p-[20px] rounded-lg"
-            style={{ width: w < 765 ? "250px" : "380px" }}
+            style={{ width: !w ? "250px" : "380px" }}
           >
             <Text>Image Manipulations</Text>
             <HStack>
