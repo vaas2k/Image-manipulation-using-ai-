@@ -10,10 +10,16 @@ const Credits = () => {
 
   const w = useWidth();
   const [plan , setPlan] = useState<number | null >(null)
-  useEffect(()=>{
-    const userString = window.sessionStorage.getItem("user");
-    const user = userString ? JSON.parse(userString) : null;
-    setPlan(user.planId);
+   useEffect(()=>{
+    try{
+      const userString = window.sessionStorage.getItem("user");
+      if(userString != null){
+        const user = JSON.parse(userString);
+        setPlan(user.planId);
+      }
+    }catch(error){
+      console.log(error);
+    }
   },[]);
 
   return (
