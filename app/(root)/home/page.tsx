@@ -21,7 +21,6 @@ const HomePage = () => {
     return (
         <div>
            <Home1/> 
-
         </div>
     )
 } 

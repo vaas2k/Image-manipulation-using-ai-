@@ -1,11 +1,12 @@
+import Home from "../page"
 
-import Home from "../page";
 
-const Home1 = () =>{
+const Home1 = () => {
 
     return(
-        <Home />
+        <Home/>
     )
+
 }
 
 export default Home1;

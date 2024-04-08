@@ -74,13 +74,13 @@ export const getUserById = async (clerkId: string) => {
   try {
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId });
+    const user = await User.findOne({ clerkId : clerkId });
 
     if (!user) {
       throw new Error("User not Found!");
     }
-
-    return JSON.parse(JSON.stringify(user));
+    console.log(user);
+    return user;
   } catch (error) {
     handleError(error);
   }
@@ -147,6 +147,31 @@ export const hasCredits = async (clerkId : string) => {
   }catch(error){
     handleError(error);
   }
-}
+};
+
+export const addCredits = async (clerkId: string, creditFee:any) => {
+  try{
+    await connectToDatabase();
+  }catch(error){
+    handleError(error);
+  }
+  
+  try {
+
+    const updatedUserCredits = await User.findOneAndUpdate(
+      { clerkId: clerkId },
+      { creditBalance: creditFee},
+      { new: true }
+    );
+
+    if (!updatedUserCredits) throw new Error("User credits update failed");
+    return JSON.parse(JSON.stringify(updatedUserCredits));
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+
+
 
 
