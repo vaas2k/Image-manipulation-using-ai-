@@ -18,7 +18,7 @@ const Checkout = ({
   plan: string;
   amount: number;
   credits: number;
-  buyerId: string;
+  buyerId: any;
 }) => {
   const { toast } = useToast();
 
@@ -55,9 +55,7 @@ const Checkout = ({
       credits,
       buyerId,
     };
-
     console.log(transaction);
-
     const url = await checkoutCredits(transaction);
     redirect(url!);
   };

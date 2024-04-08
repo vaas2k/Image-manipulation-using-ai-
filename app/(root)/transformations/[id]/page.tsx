@@ -25,9 +25,6 @@ const ImageDetails = ({params : {id}}: any) => {
         }
     },[id,user,dispatch])
 
-    console.log(config);
-
-
     return (
         <Container maxW={'85%'}>
             <ImageForm configs={config} />

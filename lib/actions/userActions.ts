@@ -149,20 +149,24 @@ export const hasCredits = async (clerkId : string) => {
   }
 };
 
-export const addCredits = async (clerkId: string, creditFee:any) => {
+export const addCredits = async (buyerId: string, creditFee:number) => {
+
   try{
+    console.log('DB CHECK');
     await connectToDatabase();
   }catch(error){
     handleError(error);
   }
   
   try {
-
+    console.log('update CHECK');
     const updatedUserCredits = await User.findOneAndUpdate(
-      { clerkId: clerkId },
+      { _id: buyerId },
       { creditBalance: creditFee},
       { new: true }
     );
+
+    console.log('Doc CHECK -> ', updatedUserCredits);
 
     if (!updatedUserCredits) throw new Error("User credits update failed");
     return JSON.parse(JSON.stringify(updatedUserCredits));

@@ -14,7 +14,6 @@ const Credits = async () => {
   if (!userId) redirect("/sign-in");
 
   const user = await getUserById(userId);
-  console.log(user);
 
   return (
     <>
@@ -59,7 +58,7 @@ const Credits = async () => {
                     plan={plan.name}
                     amount={plan.price}
                     credits={plan.credits}
-                    buyerId={user.clerkId}
+                    buyerId={user._id}
                   />
                 </SignedIn>
               )}

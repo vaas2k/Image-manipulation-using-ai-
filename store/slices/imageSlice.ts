@@ -22,7 +22,6 @@ const imageSlice = createSlice({
   initialState,
   reducers: {
     setImage: (state, action) => {
-      console.log(action);
         // Destructure the payload for better readability
       const {
         image,

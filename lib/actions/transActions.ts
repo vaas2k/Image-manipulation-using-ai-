@@ -8,13 +8,11 @@ import { connectToDatabase } from "../database/database";
 import { addCredits } from "./userActions";
 
 export const checkoutCredits =  async (transaction : CheckoutTransactionParams) => {
-
+    console.log(transaction);
     try{
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-        console.log('1st')
 
         const amount = Number(transaction.amount) * 100;
-        console.log('2nd')
 
         const session = await stripe.checkout.sessions.create({
             line_items: [
@@ -31,14 +29,13 @@ export const checkoutCredits =  async (transaction : CheckoutTransactionParams) 
             ],
             metadata: {
                 plan : transaction.plan,
-                credits : transaction.plan,
+                credits : transaction.credits,
                 buyerId : transaction.buyerId
             },
             mode : 'payment',
-            success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/profile`,
+            success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/home`,
             cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
         })
-        console.log(session);
 
         return session.url!;
     }catch(error){

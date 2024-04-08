@@ -12,7 +12,6 @@ const HomePage = () => {
         async function getUSer(){
             if(user?.id != undefined){
                 const getUser = await getUserById(user?.id);
-                console.log(getUser);
                 window.sessionStorage.setItem('user',JSON.stringify(getUser));
             }
         }

@@ -24,22 +24,22 @@ import { hasCredits, useCredits } from "@/lib/actions/userActions";
 import { useToast } from "../ui/use-toast";
 
 export const ImageForm = ({configs}:any) => {
-  const [aspectRatio, setAspectRatio] = useState<string>('');
-  const dispatch = useAppDispatch()
-  const [selectedImage, setSelectedImage] = useState<any>({});
-  const [transforming_img, setTransforming_img ] = useState<boolean>(false);
-  const w = useWidth();
-  const imageState = useAppSelector((state) => { return state.imageSlice;});
-
-  const {toast} = useToast();
   
-  async function onSubmit() {
-    // check for credits
-    const credits = await hasCredits(imageState.author);
-
-    if (credits) {
-      console.log(credits);
-      setTransforming_img(true);
+    const [aspectRatio, setAspectRatio] = useState<string>('');
+    const dispatch = useAppDispatch()
+    const [selectedImage, setSelectedImage] = useState<any>({});
+    const [transforming_img, setTransforming_img ] = useState<boolean>(false);
+    const w = useWidth();
+    const imageState = useAppSelector((state) => { return state.imageSlice;});
+    
+    const {toast} = useToast();
+    
+    async function onSubmit() {
+      // check for credits
+      const credits = await hasCredits(imageState.author);
+      
+      if (credits) {
+        setTransforming_img(true);
       setTimeout(() => {
         dispatch(
           setImage({
@@ -51,9 +51,9 @@ export const ImageForm = ({configs}:any) => {
           })
         );
         setTransforming_img(false);
-
+        
         useCredits(imageState.author,credits);
-
+        
         toast({
           title: "Image uploaded successfully",
           description: "1 credit was deducted from your account",
@@ -70,9 +70,9 @@ export const ImageForm = ({configs}:any) => {
       });
     }
   }
-    
-
-
+  
+  
+  
   return (
     <Stack>
       <Stack pb={5}>
@@ -83,11 +83,11 @@ export const ImageForm = ({configs}:any) => {
       <Stack py={3}>
         <Label htmlFor="image">Image Title</Label>
         <Input type="text" id="image" value={imageState.title} onChange={(e) => {
-              dispatch(
-                setImage({...imageState,
-                title:e.target.value}))
-              }
-              } />
+          dispatch(
+            setImage({...imageState,
+              title:e.target.value}))
+            }
+          } />
       </Stack>
       <Stack py={4}>
         {configs.type == "fill" && (
@@ -114,8 +114,8 @@ export const ImageForm = ({configs}:any) => {
             <Input type="text" id="Prompt" name="prompt" value={imageState.Prompt} onChange={(e) => {
               dispatch(
                 setImage({...imageState,
-                Prompt:e.target.value}))
-              }
+                  Prompt:e.target.value}))
+                }
               } />
           </>
         )}
@@ -125,14 +125,14 @@ export const ImageForm = ({configs}:any) => {
             <Input type="text" id="obj" placeholder="object to recolor" value={imageState.object_recolor} onChange={(e) => {
               dispatch(
                 setImage({...imageState,
-                object_recolor:e.target.value}))
-              }
+                  object_recolor:e.target.value}))
+                }
               } />
             <Input type="text" id="color" placeholder="color" value={imageState.color} onChange={(e) => {
               dispatch(
                 setImage({...imageState,
-                color:e.target.value}))
-              }
+                  color:e.target.value}))
+                }
               } />
           </Stack>
         )}
@@ -143,7 +143,7 @@ export const ImageForm = ({configs}:any) => {
         gap={"40px"}
         alignItems={"flex-start"}
         justifyContent={"space-between"}
-      >
+        >
         <MediaUploader selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
         <Transformed_Image isTransforming={transforming_img} setTransforming_img />
       </Flex>
@@ -154,5 +154,5 @@ export const ImageForm = ({configs}:any) => {
       </Stack>
     </Stack>
   );
-};
 
+};

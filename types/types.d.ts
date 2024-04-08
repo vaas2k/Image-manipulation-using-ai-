@@ -55,7 +55,7 @@ interface CheckoutTransactionParams  {
   plan: string;
   credits: number;
   amount: number;
-  buyerId: string;
+  buyerId: any;
 };
 
 interface CreateTransactionParams  {
