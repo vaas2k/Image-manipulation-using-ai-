@@ -28,18 +28,18 @@ interface Form {
 
 interface imageVal {
   image: any;
-  title: string;
-  type: string;
-  width: number;
-  height: number;
-  aspect_ratio?: string;
-  config?: object;
-  color?: string;
-  object_recolor: string;
-  Prompt?: string;
-  transformation_url: string;
-  author: string;
-  author_img: string;
+  title: string | undefined | null;
+  type: string | undefined | null;
+  width: number | undefined | null;
+  height: number | undefined | null;
+  aspect_ratio?: string | undefined | null;
+  config?: object | undefined | null;
+  color?: string | undefined | null;
+  object_recolor: string | undefined | null;
+  Prompt?: string | undefined | null;
+  transformation_url: string | undefined | null;
+  author: string | undefined | null ;
+  author_img: string | undefined | null;
 }
 
 interface TransformationImage {
@@ -52,7 +52,7 @@ interface TransformationImage {
 }
 
 interface CheckoutTransactionParams  {
-  plan: string;
+  plan: string ;
   credits: number;
   amount: number;
   buyerId: any;

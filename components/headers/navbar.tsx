@@ -3,13 +3,27 @@ import b from "./bar.module.css";
 import { useState, useEffect } from "react";
 import { ReactElement } from "react";
 import { Button } from "../ui/button";
-import { Flex, Box, Text, Stack, Divider } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Text,
+  Stack,
+  Divider,
+  Image,
+  HStack,
+} from "@chakra-ui/react";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
-import { Sheet,SheetContent,SheetHeader,SheetTitle,SheetTrigger,} from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlignLeft } from "lucide-react";
-import { LogOut} from "lucide-react";
+import { AlignLeft, Sparkles } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { sidelinks } from "./sidebar";
 import { resetUser } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/app/hooks";
@@ -17,12 +31,12 @@ import { useWidth } from "@/lib/widthCheck";
 
 const Navbar = (): ReactElement => {
   const router = useRouter();
-  const [toggle , setToggle ] = useState('Home');
+  const [toggle, setToggle] = useState("Home");
   const w = useWidth();
 
   const dispatch = useAppDispatch();
 
-  function handleReset(){
+  function handleReset() {
     dispatch(resetUser());
     router.push("/");
   }
@@ -31,16 +45,21 @@ const Navbar = (): ReactElement => {
     <>
       {w ? (
         <Flex justifyContent={"space-between"} alignItems={"center"} pt={8}>
-          <Box pl={12}>
-            <Text>Logo</Text>
-          </Box>
+          <Link href="/home">
+            <HStack pl={7}>
+              <Sparkles />
+              <Text fontFamily={"cursive"} fontSize={"25px"}>
+                PixerAi
+              </Text>
+            </HStack>
+          </Link>
 
           <Flex pr={12} gap={5}>
-              <UserButton />
+            <UserButton />
           </Flex>
         </Flex>
       ) : (
-        <Sheet>
+        <Sheet >
           {!w && (
             <Flex p={5} alignItems={"center"} justifyContent={"space-between"}>
               <Flex style={{ opacity: "80%" }}>
@@ -48,9 +67,14 @@ const Navbar = (): ReactElement => {
                   <AlignLeft size={"20px"} />
                 </SheetTrigger>
               </Flex>
-              <Box>
-                <Text>Logo</Text>
-              </Box>
+              <Link href="/home">
+                <HStack>
+                  <Sparkles />
+                  <Text fontFamily={"cursive"} fontSize={"25px"}>
+                    PixerAi
+                  </Text>
+                </HStack>
+              </Link>
 
               <UserButton />
             </Flex>
@@ -63,7 +87,7 @@ const Navbar = (): ReactElement => {
               <Stack gap={5}>
                 {sidelinks.map((i) => {
                   return (
-                    <Link href={i.link}>
+                    <Link href={i.link} key={i.type}>
                       <div
                         className={
                           toggle === i.type
@@ -92,6 +116,7 @@ const Navbar = (): ReactElement => {
                   }
                   onClick={() => {
                     setToggle("out");
+                    dispatch(resetUser());
                   }}
                 >
                   <LogOut />

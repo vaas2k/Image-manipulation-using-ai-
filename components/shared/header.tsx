@@ -1,6 +1,6 @@
 'use client'
 import { useWidth } from "@/lib/widthCheck";
-import { Container, useMediaQuery } from "@chakra-ui/react"
+import { Container, useMediaQuery,Text } from "@chakra-ui/react"
 import { Image } from "@chakra-ui/react";
 import {useState , useEffect } from 'react'
 
@@ -10,10 +10,12 @@ const Header = () => {
 
     return (
         <Container pt={6} maxW={w ? '80%' : '100%'}>
+            
             <Image
-             src='/bgheader.jpg'
+            className="header_image"
+             src='/Neon Modern Black Friday Banner.png'
              width={'100%'}
-             height={w ? '350px' : '200px'}
+             height={w ? '390px' : '180px'}
              style={{objectFit:'cover',borderRadius:'15px'}}
              />
         </Container>

@@ -1,10 +1,10 @@
-import Home from "../page"
+import Page from "../page"
 
 
 const Home1 = () => {
 
     return(
-        <Home/>
+        <Page/>
     )
 
 }

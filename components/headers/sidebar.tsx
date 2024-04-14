@@ -11,8 +11,8 @@ import {
   UserRound,
   Coins,
   SlidersHorizontal,
+  Scan
 } from "lucide-react";
-import { Scan } from "lucide-react";
 import b from "./bar.module.css";
 import Link from "next/link";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
@@ -53,7 +53,7 @@ const Sidebar = () => {
           <Flex gap={4} pl={5} direction={"column"} alignItems={"flex-start"}>
           {sidelinks.map((i)=>{
               return(
-                <Link href={i.link}>
+                <Link href={i.link} key={1}>
               <div
                 className={
                   toggle === i.type
@@ -76,7 +76,7 @@ const Sidebar = () => {
           <Flex direction={"column"} gap={6} pl={5} alignItems={"flex-start"}>
             {prolinks.map((i)=>{
               return(
-                <Link href={i.link}>
+                <Link href={i.link} key={1}>
               <div
                 className={
                   toggle === i.type

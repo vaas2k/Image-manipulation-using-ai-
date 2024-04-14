@@ -74,3 +74,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.loggos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  flex-direction: column;
+}
+
+.logo_each{
+  display: flex;
+  padding: 6.5px;
+  border-radius: 22px;
+  background-color: aliceblue;
+  color: rgb(34, 34, 34);
+  transition: all 0.5s ease;
+}
+.logo_each:hover{
+  background-color: rgb(34, 34, 34);
+  color: aliceblue
+}
+
+.header_image{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}

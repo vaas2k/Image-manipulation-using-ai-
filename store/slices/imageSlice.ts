@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import { imageVal } from "@/types/types";
 
 const initialState: imageVal = {

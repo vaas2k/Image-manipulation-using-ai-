@@ -5,10 +5,10 @@ import User from "../database/model/user";
 import { connectToDatabase } from "../database/database";
 import { handleError } from "../utils";
 import { CreateUser, UpdateUser } from "@/types/types";
-import { useAppDispatch } from "@/app/hooks";
 
 const createUserWithCache = (() => {
-    const userExistsCache: { [key: string]: boolean } = {}; // Object to store cached user existence
+   
+  const userExistsCache: { [key: string]: boolean } = {}; // Object to store cached user existence
     return async (clerkId: string | undefined, user: CreateUser) => {
         try {
             await connectToDatabase();
@@ -43,7 +43,7 @@ const createUserWithCache = (() => {
                 if (clerkId !== undefined) {
                     userExistsCache[clerkId] = true;
                 }
-                return 'User already exists';
+                return check;
             }
         } catch (error) {
             handleError(error);
@@ -70,10 +70,10 @@ export const updateUser = async (clerkId: string, user: UpdateUser) => {
   }
 };
 
-export const getUserById = async (clerkId: string) => {
+export const getUserById = async (clerkId: string | undefined) => {
   try {
     await connectToDatabase();
-
+    console.log('asdas');
     const user = await User.findOne({ clerkId : clerkId });
 
     if (!user) {

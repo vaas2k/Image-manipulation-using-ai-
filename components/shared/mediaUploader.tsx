@@ -25,16 +25,13 @@ export const MediaUploader = ({selectedImage,setSelectedImage} : any ) => {
   const { toast } = useToast();
 
   function handleSucess(result:any) {
+
+    console.log(result);
     setSelectedImage({
-      image: result?.info?.secure_url,
-      width: result?.info?.width,
-      height: result?.info?.height,
-    });
-    toast({
-      title: "Image uploaded successfully",
-      description: "1 credit was deducted from your account",
-      duration: 5000,
-      className: "success-toast",
+      image: result.info.url,
+      width: result.info.width,
+      height: result.info.height,
+      publicId : result.info.public_id
     });
   }
 
@@ -57,8 +54,8 @@ export const MediaUploader = ({selectedImage,setSelectedImage} : any ) => {
                   <div
                     className={up.Div1}
                     style={{
-                      width: w ? "370px" : "250px",
-                      height: "240px",
+                      width: w ? "370px" : "235px",
+                      height: w ? "240" : "220px",
                     }}
                     onClick={() => {
                       open();
@@ -72,15 +69,17 @@ export const MediaUploader = ({selectedImage,setSelectedImage} : any ) => {
                 <Stack>
                   <Text pb={5}>Original</Text>
                   <div className="cursor-pointer overflow-hidden rounded-[10px]">
-                <CldImage 
-                  width={w ? 370 : 250}
-                  height={selectedImage.height}
-                  src={selectedImage.image}
-                  alt="image"
-                  sizes={"(max-width: 767px) 100vw, 50vw"}
-                  onClick={()=>{open();}}
-                />
-              </div>
+                    <CldImage
+                      width={w ? 370 : 250}
+                      height={selectedImage.height}
+                      src={selectedImage.image}
+                      alt="image"
+                      sizes={"(max-width: 767px) 100vw, 50vw"}
+                      onClick={() => {
+                        open();
+                      }}
+                    />
+                  </div>
                 </Stack>
               )}
             </Flex>

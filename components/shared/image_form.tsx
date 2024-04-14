@@ -12,67 +12,71 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import up from "./comp.module.css";
-import { useWidth } from "../../lib/widthCheck";
-import { Plus } from "lucide-react";
 import { MediaUploader } from "./mediaUploader";
 import { Transformed_Image } from "./transformed_image";
 import { Button } from "../ui/button";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setImage } from "@/store/slices/imageSlice";
-import { hasCredits, useCredits } from "@/lib/actions/userActions";
 import { useToast } from "../ui/use-toast";
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { setUser } from "@/store/slices/userSlice";
 
-export const ImageForm = ({configs}:any) => {
-  
-    const [aspectRatio, setAspectRatio] = useState<string>('');
-    const dispatch = useAppDispatch()
-    const [selectedImage, setSelectedImage] = useState<any>({});
-    const [transforming_img, setTransforming_img ] = useState<boolean>(false);
-    const w = useWidth();
-    const imageState = useAppSelector((state) => { return state.imageSlice;});
+
+
+export const ImageForm = ({ configs }: any) => {
+
+  const { toast } = useToast();
+  const [aspectRatio, setAspectRatio] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const [selectedImage, setSelectedImage] = useState<any>({
+    image: '',
+    width: '',
+    height: '',
+    publicId:''
+  });
+  const [transforming_img, setTransforming_img] = useState<boolean>(false);
+  const imageState = useAppSelector((state) => { return state.imageSlice });
+  const cur_user = useAppSelector((state) => { return state.userSlice });
+
+
+
+  async function onSubmit() {
+    setTransforming_img(true);
     
-    const {toast} = useToast();
-    
-    async function onSubmit() {
-      // check for credits
-      const credits = await hasCredits(imageState.author);
-      
-      if (credits) {
-        setTransforming_img(true);
-      setTimeout(() => {
-        dispatch(
-          setImage({
-            ...imageState,
-            image: selectedImage.image,
-            width: selectedImage.width,
-            height: selectedImage.height,
-            transformation_url: selectedImage.image,
-          })
-        );
-        setTransforming_img(false);
-        
-        useCredits(imageState.author,credits);
-        
-        toast({
-          title: "Image uploaded successfully",
-          description: "1 credit was deducted from your account",
-          duration: 5000,
-          className: "success-toast",
-        });
-      }, 3000);
-    } else {
+    if(imageState.transformation_url){
+      dispatch(setImage({
+        ...imageState,
+        transformation_url :"",
+        width : "",
+        height : "",
+      }))
+    }
+
+    setTimeout(()=>{
+      dispatch(setImage({
+        ...imageState,
+        transformation_url :selectedImage.image,
+        width : selectedImage.width,
+        height : selectedImage.height,
+      }))
+      setTransforming_img(false);
+
+      dispatch(setUser({
+        ...cur_user,
+        credits : cur_user.credits - 1
+      }))
       toast({
-        title: "Insuffucient Credits",
-        description: "Upgrade Your Plan To Use Transformations",
+        title: "Image Transformation Done",
+        description: "1 credit was deducted from your account",
         duration: 5000,
         className: "success-toast",
       });
-    }
+    },3000)
+
+
+    
   }
-  
-  
-  
+
   return (
     <Stack>
       <Stack pb={5}>
@@ -82,26 +86,32 @@ export const ImageForm = ({configs}:any) => {
 
       <Stack py={3}>
         <Label htmlFor="image">Image Title</Label>
-        <Input type="text" id="image" value={imageState.title} onChange={(e) => {
-          dispatch(
-            setImage({...imageState,
-              title:e.target.value}))
-            }
-          } />
+        <Input
+          type="text"
+          id="image"
+          value={imageState.title}
+          onChange={(e) => {
+            dispatch(setImage({ ...imageState, title: e.target.value }));
+          }}
+        />
       </Stack>
       <Stack py={4}>
         {configs.type == "fill" && (
           <>
             <Label>Aspect Ratio</Label>
-            <Select onValueChange={(value) => {dispatch(setImage({...imageState,aspect_ratio:value}))}}>
+            <Select
+              onValueChange={(value) => {
+                dispatch(setImage({ ...imageState, aspect_ratio: value }));
+              }}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select a size" />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup >
-                  <SelectItem value="4:3" >4:3</SelectItem>
-                  <SelectItem value="16:9" >16:9</SelectItem>
-                  <SelectItem value="9:16" >9:16</SelectItem>
+                <SelectGroup>
+                  <SelectItem value="4:3">4:3</SelectItem>
+                  <SelectItem value="16:9">16:9</SelectItem>
+                  <SelectItem value="9:16">9:16</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -111,48 +121,76 @@ export const ImageForm = ({configs}:any) => {
         {configs.type == "prompt" && (
           <>
             <Label htmlFor="Prompt">{configs.label}</Label>
-            <Input type="text" id="Prompt" name="prompt" value={imageState.Prompt} onChange={(e) => {
-              dispatch(
-                setImage({...imageState,
-                  Prompt:e.target.value}))
-                }
-              } />
+            <Input
+              type="text"
+              id="Prompt"
+              name="prompt"
+              value={imageState.Prompt}
+              onChange={(e) => {
+                dispatch(setImage({ ...imageState, Prompt: e.target.value }));
+              }}
+            />
           </>
         )}
 
         {configs.type == "recolor" && (
           <Stack direction={"row"}>
-            <Input type="text" id="obj" placeholder="object to recolor" value={imageState.object_recolor} onChange={(e) => {
-              dispatch(
-                setImage({...imageState,
-                  object_recolor:e.target.value}))
-                }
-              } />
-            <Input type="text" id="color" placeholder="color" value={imageState.color} onChange={(e) => {
-              dispatch(
-                setImage({...imageState,
-                  color:e.target.value}))
-                }
-              } />
+            <Input
+              type="text"
+              id="obj"
+              placeholder="object to recolor"
+              value={imageState.object_recolor}
+              onChange={(e) => {
+                dispatch(
+                  setImage({ ...imageState, object_recolor: e.target.value })
+                );
+              }}
+            />
+            <Input
+              type="text"
+              id="color"
+              placeholder="color"
+              value={imageState.color}
+              onChange={(e) => {
+                dispatch(setImage({ ...imageState, color: e.target.value }));
+              }}
+            />
           </Stack>
         )}
       </Stack>
 
       <Flex
-        direction={w ? "row" : "column"}
+        wrap={"wrap"}
         gap={"40px"}
         alignItems={"flex-start"}
         justifyContent={"space-between"}
-        >
-        <MediaUploader selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
-        <Transformed_Image isTransforming={transforming_img} setTransforming_img />
+      >
+        <MediaUploader
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+        />
+        <Transformed_Image
+          isTransforming={transforming_img}
+          selectedImage
+          myImage
+        />
       </Flex>
-
-      <Stack py={12} gap={6}>
-        <Button style={{opacity: selectedImage.image ? '100%' : '50%'}} onClick={onSubmit}>Apply Transformation</Button>
+      <Stack pb={10} pt={5} gap={6}>
+        {!transforming_img ? (<Button
+          disabled={selectedImage.image ? false : true}
+          onClick={onSubmit}
+        >
+          Apply Transformation
+        </Button>)
+        :
+        (<Button disabled>
+          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+          Generating
+        </Button>)
+        }
         <Button>Save Image</Button>
       </Stack>
+
     </Stack>
   );
-
 };

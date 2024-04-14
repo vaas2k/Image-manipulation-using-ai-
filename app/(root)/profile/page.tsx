@@ -4,16 +4,11 @@ import { Container, Stack, Text, Box, HStack, Flex } from "@chakra-ui/react";
 import { Coins, Image } from "lucide-react";
 import { UserProfile } from "@clerk/nextjs";
 import { useState,useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 
 const Profile = () => {
   const w = useWidth();
-
-  const [credits, setCredits] = useState();
-  useEffect(()=>{
-      const userString = window.sessionStorage.getItem("user");
-      const user = userString ? JSON.parse(userString) : null;
-      setCredits(user.creditBalance);
-    },[]);
+  const credits = useAppSelector((state) => { return state.userSlice.credits});
 
   return (
     <Container maxW={"85%"}>
