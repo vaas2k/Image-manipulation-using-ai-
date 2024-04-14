@@ -37,7 +37,7 @@ const Page = () => {
           credits: null,
         };
         const newuser = await createUser(user.id, obj);
-        if(curr_user.clerkId !== newuser.clerkId){
+        if(newuser !== undefined && curr_user.clerkId !== newuser.clerkId){
           console.log('called dispatch') 
           dispatch(setUser({
             clerkId : newuser.id,
