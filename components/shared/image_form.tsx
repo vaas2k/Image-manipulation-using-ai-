@@ -63,7 +63,7 @@ export const ImageForm = ({ configs }: any) => {
 
       dispatch(setUser({
         ...cur_user,
-        credits : cur_user.credits - 1
+        credits : cur_user.credits! - 1
       }))
       toast({
         title: "Image Transformation Done",
@@ -89,7 +89,7 @@ export const ImageForm = ({ configs }: any) => {
         <Input
           type="text"
           id="image"
-          value={imageState.title}
+          value={imageState.title!}
           onChange={(e) => {
             dispatch(setImage({ ...imageState, title: e.target.value }));
           }}
@@ -125,7 +125,7 @@ export const ImageForm = ({ configs }: any) => {
               type="text"
               id="Prompt"
               name="prompt"
-              value={imageState.Prompt}
+              value={imageState.Prompt!}
               onChange={(e) => {
                 dispatch(setImage({ ...imageState, Prompt: e.target.value }));
               }}
@@ -139,7 +139,7 @@ export const ImageForm = ({ configs }: any) => {
               type="text"
               id="obj"
               placeholder="object to recolor"
-              value={imageState.object_recolor}
+              value={imageState.object_recolor!}
               onChange={(e) => {
                 dispatch(
                   setImage({ ...imageState, object_recolor: e.target.value })
@@ -150,7 +150,7 @@ export const ImageForm = ({ configs }: any) => {
               type="text"
               id="color"
               placeholder="color"
-              value={imageState.color}
+              value={imageState.color!}
               onChange={(e) => {
                 dispatch(setImage({ ...imageState, color: e.target.value }));
               }}
