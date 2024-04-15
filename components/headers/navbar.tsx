@@ -45,7 +45,7 @@ const Navbar = (): ReactElement => {
     <>
       {w ? (
         <Flex justifyContent={"space-between"} alignItems={"center"} pt={8}>
-          <Link href="/home">
+          <Link href="/">
             <HStack pl={7}>
               <Sparkles />
               <Text fontFamily={"cursive"} fontSize={"25px"}>

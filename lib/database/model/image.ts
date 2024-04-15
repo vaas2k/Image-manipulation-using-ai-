@@ -2,9 +2,9 @@ import mongoose, {Schema , model , models} from 'mongoose';
 
 
 const ImageSchema = new Schema({
-    title : {type : String , required : true },
+    title : {type : String, required : true },
     type : {type : String , required : true},
-    image_url : {type : String},
+    image_url : {type : String , required : true},
     width : {type : Number},
     height : {type : Number},
     aspect_ratio : {type:String},

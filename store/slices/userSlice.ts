@@ -1,9 +1,9 @@
 "use client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import { CreateUser } from "@/types/types";
 
 const initialState: CreateUser = {
+  _id : "",
   clerkId: "",
   username: "",
   email: "",
@@ -18,6 +18,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
+      state._id = action.payload._id;
       state.username = action.payload.username;
       state.clerkId = action.payload.clerkId;
       state.email = action.payload.email;
@@ -27,6 +28,7 @@ const userSlice = createSlice({
       state.plan = action.payload.plan;
     },
     resetUser: (state) => {
+      (state._id = ""),
       (state.clerkId = ""),
         (state.username = ""),
         (state.email = ""),

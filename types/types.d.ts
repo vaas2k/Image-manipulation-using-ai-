@@ -1,4 +1,5 @@
 interface CreateUser {
+  _id ?: string | undefined,
   clerkId: string | undefined;
   username: string | null | undefined;
   email: string | null | undefined;

@@ -6,7 +6,6 @@ import {
   Home,
   Image,
   Aperture,
-  Star,
   Sparkles,
   UserRound,
   Coins,
@@ -18,9 +17,10 @@ import Link from "next/link";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { useWidth } from "@/lib/widthCheck";
 import { useUser } from "@clerk/nextjs";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const Sidebar = () => {
-  const {user} = useUser();
+  const {isSignedIn,isLoaded,user} = useUser();
   const w = useWidth();
   const [toggle, setToggle] = useState<any>("");
   let prolinks = [
@@ -39,31 +39,39 @@ const Sidebar = () => {
       logo: <Coins />,
     },
   ];
+  let loginLinks = [
+    {
+      link: "/sign-in",
+      name: "Signin",
+      description: "login to your account",
+      type: "Signin",
+    },
+    {
+      link: "/sign-up",
+      name: "Signup",
+      description: "register your account",
+      type: "Signup",
+    },
+  ];
 
-  
-  return (
-    <>
-      {w && (
-        <Flex
-          style={{ paddingTop: "50px", height: "100%", gap: "100px" }}
-          p={5}
-          direction={"column"}
-          width={"300px"}
-        >
+  const renderSiderBar = () => {
+    if(isLoaded && isSignedIn ){
+      return(
+        <>
           <Flex gap={4} pl={5} direction={"column"} alignItems={"flex-start"}>
           {sidelinks.map((i)=>{
-              return(
-                <Link href={i.link} key={1}>
+            return(
+              <Link href={i.link} key={1}>
               <div
                 className={
                   toggle === i.type
-                    ? b.side_bar_button_clicked
-                    : b.side_bar_button
+                  ? b.side_bar_button_clicked
+                  : b.side_bar_button
                 }
                 onClick={() => {
                   setToggle(i.type);
                 }}
-              >
+                >
                 {i.logo}
                 <p style={{ marginTop: "2.5px", marginLeft: "8px" }}>
                   {i.name}
@@ -80,13 +88,13 @@ const Sidebar = () => {
               <div
                 className={
                   toggle === i.type
-                    ? b.side_bar_button_clicked
-                    : b.side_bar_button
+                  ? b.side_bar_button_clicked
+                  : b.side_bar_button
                 }
                 onClick={() => {
                   setToggle(i.type);
                 }}
-              >
+                >
                 {i.logo}
                 <p style={{ marginTop: "2.5px", marginLeft: "8px" }}>
                   {i.name}
@@ -96,6 +104,48 @@ const Sidebar = () => {
               )
             })}
           </Flex>
+          </>
+      )
+    }
+    else if(!isLoaded && !isSignedIn){
+      return(
+        <>
+         <Flex direction={"column"} gap={6} pl={5} alignItems={"flex-start"}>
+         <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+           {" "}           
+          </Flex>
+         </> 
+      )
+    }
+    else if(!isSignedIn){
+      return(
+        <>
+       <Flex direction={"column"} gap={6} pl={5} alignItems={"flex-start"}>
+          {loginLinks.map((i)=>{
+            return(
+              <Link href={i.link} key={1}>
+                <Button className="w-[180px]">
+                   {i.name}
+                  </Button>            
+          </Link>
+            )
+          })}
+        </Flex>
+       </> 
+    )
+  }
+  }
+  
+  return (
+    <>
+      {w && (
+        <Flex
+          style={{ paddingTop: "50px", height: "100%", gap: "100px" }}
+          p={5}
+          direction={"column"}
+          width={"300px"}
+        >
+          {renderSiderBar()}
         </Flex>
       )}
     </>
@@ -104,7 +154,7 @@ const Sidebar = () => {
 
 export const sidelinks = [
   {
-    link: "/home",
+    link: "/",
     name: "Home",
     description: "Home",
     type: "home",

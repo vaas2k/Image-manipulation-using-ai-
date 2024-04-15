@@ -21,7 +21,7 @@ export default function RootLayout({
         <ClerkProvider>
           <ChakraProvider>
             <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor} >
+              <PersistGate loading={null} persistor={persistor!} >
                   {children}
               </PersistGate>
             <Toaster />

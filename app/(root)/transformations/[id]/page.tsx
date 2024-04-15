@@ -1,7 +1,8 @@
 'use client'
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { ImageForm } from "@/components/shared/image_form";
 import { setImage } from "@/store/slices/imageSlice";
+import userSlice from "@/store/slices/userSlice";
 import { Container } from "@chakra-ui/react";
 import { useUser } from "@clerk/nextjs";
 import { useEffect,useState } from "react";
@@ -11,13 +12,14 @@ const ImageDetails = ({params : {id}}: any) => {
     const {user} = useUser();
     const dispatch = useAppDispatch();
     const [ config , setConfig ] = useState({});
+    const userId = useAppSelector((state) => {return state.userSlice._id});
     useEffect(()=>{
         for(let i = 0; i < tranformation_configs.length ;i++){
             if(tranformation_configs[i].link == id){
                 setConfig(tranformation_configs[i]);
                 dispatch(setImage({
                   type: tranformation_configs[i].type,
-                  author: user?.id,
+                  author: userId,
                   author_img : user?.imageUrl
                 }));
                 break;

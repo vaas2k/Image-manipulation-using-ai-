@@ -23,6 +23,79 @@ const Edits = () => {
                   />
                   <Flex>name</Flex>
             </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            <div>
+                <Image
+                  src='/bgheader.jpg'
+                  width={'220px'}
+                  height={'200px'}
+                  style={{objectFit:'cover',borderRadius:'10px'}}
+                  />
+                  <Flex>name</Flex>
+            </div>
+            
             
         </Flex>
         

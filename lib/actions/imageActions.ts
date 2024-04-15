@@ -26,10 +26,16 @@ export const saveImage = async (imageProps: imageVal) => {
       author: imageProps.author,
       author_img: imageProps.author_img,
     });
-    await save_image.save();
-    console.log("image upload to db");
+    const saved = await save_image.save();
+    if(saved){
+      console.log("image upload to db");
+      return true;
+    } 
+    else{
+      console.log(saved);
+    }
   } catch (error) {
-    handleError(error);
+    console.log(error);
   }
 };
 
@@ -48,5 +54,25 @@ export async function text_to_image(data: any) {
   const imageUrl = URL.createObjectURL(blob);
   console.log(imageUrl);
   return imageUrl;
+};
+
+export async function getUserImages(id:string){
+  try{
+    await connectToDatabase();
+    const images = await ImageModel.find({author : id});
+    return images;
+  }catch(error){
+    console.log(error);
+  }
+}
+
+export async function getAllImages() {
+
+  try{
+    await connectToDatabase();
+  }
+  catch(error){
+    console.log(error);
+  }
 }
 

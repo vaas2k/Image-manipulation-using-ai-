@@ -6,7 +6,7 @@ import Edits from "@/components/shared/comm_edits";
 import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createUser, getUserById } from "@/lib/actions/userActions";
+import { createUser } from "@/lib/actions/userActions";
 import { CreateUser } from "@/types/types";
 import { Image, Aperture, Sparkles, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -17,7 +17,7 @@ import { setUser } from "@/store/slices/userSlice";
 const Page = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { isSignedIn, isLoaded, user } = useUser();
+  const { isSignedIn, user } = useUser();
   const w = useWidth();
   const curr_user = useAppSelector((state) => {
     return state.userSlice;
@@ -40,6 +40,7 @@ const Page = () => {
         if(newuser !== undefined && curr_user.clerkId !== newuser.clerkId){
           console.log('called dispatch') 
           dispatch(setUser({
+            _id : newuser._id,
             clerkId : newuser.id,
             username : newuser.username,
             email : newuser.email,
@@ -50,18 +51,10 @@ const Page = () => {
       }
     }
 
-    //createUser_if_Not_exist();
+    createUser_if_Not_exist();
   }, [isSignedIn, user]);
 
-  try {
-    if (isSignedIn) {
-      router.push("/home");
-    } else {
-      router.push("/");
-    }
-  } catch (error) {
-    console.error("Error during navigation:", error);
-  }
+
   const icos = [
     {
       logo: <Image size={w ? "4vh" : "3vh"} />,
@@ -87,7 +80,7 @@ const Page = () => {
 
   return (
     <>
-      {!isSignedIn && (
+      {/*!isSignedIn && (
         <Flex
           pt={8}
           px={4}
@@ -110,7 +103,7 @@ const Page = () => {
             </>
           </Box>
         </Flex>
-      )}
+      )*/}
       <Header />
       <Flex
         className="items-center justify-center mt-[-80px]"
@@ -133,6 +126,4 @@ const Page = () => {
 };
 
 export default Page;
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}
+
