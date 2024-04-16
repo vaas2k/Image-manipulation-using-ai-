@@ -36,7 +36,7 @@ const Profile = () => {
           <Text className="text-xl font-semibold">Image Manipulations</Text>
           <HStack spacing={2}>
             <LucidityImage size={24} />
-            <p className="text-lg font-medium">6</p>
+            <p className="text-lg font-medium">{userImages.length}</p>
           </HStack>
         </div>
       </Stack>

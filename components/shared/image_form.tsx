@@ -86,7 +86,7 @@ export const ImageForm = ({ configs }: any) => {
     if(!imageState.title){setError('title')}
     setSaving_img(true);
     const img: imageVal = {
-      image: imageState.image,
+      image: imageState.image || selectedImage.image,
       title: imageState.title,
       type: imageState.type,
       width: imageState.width,

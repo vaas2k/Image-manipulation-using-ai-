@@ -60,16 +60,24 @@ export async function getUserImages(id:string){
   try{
     await connectToDatabase();
     const images = await ImageModel.find({author : id});
-    return images;
+    return JSON.parse(JSON.stringify(images));
   }catch(error){
     console.log(error);
   }
 }
 
-export async function getAllImages() {
-
+export async function getAllImages(skip: number) {
+  
   try{
     await connectToDatabase();
+    console.log(skip)
+    const total = await ImageModel.countDocuments({});
+    if(total == skip) { return [];}
+    const images = await ImageModel.find({})
+    .sort({_id : 1})
+    .skip(skip)
+    .limit(3)
+    return images;
   }
   catch(error){
     console.log(error);

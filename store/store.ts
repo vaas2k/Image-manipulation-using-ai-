@@ -4,6 +4,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import storage from "./storage";
 import userSlice from "./slices/userSlice";
 import imageSlice from "./slices/imageSlice";
+import Images from './slices/cacheImages';
 
 
 const persistConfig = {
@@ -15,7 +16,7 @@ const persistConfig = {
 
 
 const rootReducer = combineReducers({
-  userSlice,imageSlice
+  userSlice,imageSlice,Images
 })
 
 const persistedReducer = persistReducer(persistConfig,rootReducer);
