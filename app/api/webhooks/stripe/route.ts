@@ -19,28 +19,33 @@ export async function POST(request : Request){
         console.log('WebHook Error -> ',error);
     }
 
+    
     const eventType = event?.type;
+    try{
 
-    if(eventType === 'checkout.session.completed'){
-        console.log('type found');
-        const {id,metadata,amount_total} = event.data.object;
-        console.log('Metadata -> ',metadata);
-
-        const transaction = {
-            stripeId: id,
-            amount: amount_total ? amount_total / 100 : 0,
-            plan: metadata?.plan || "",
-            credits: Number(metadata?.credits) || 0,
-            buyerId: metadata?.buyerId || "",
-            createdAt: new Date(),
-        };
-
-        console.log(transaction);
-
-        const newTransaction = await createTransaction(transaction);
-
-        console.log('transaction done');
-        return NextResponse.json({ message: "OK", transaction: newTransaction });
+        if(eventType === 'checkout.session.completed'){
+            console.log('type found');
+            const {id,metadata,amount_total} = event.data.object;
+            console.log('Metadata -> ',metadata);
+            
+            const transaction = {
+                stripeId: id,
+                amount: amount_total ? amount_total / 100 : 0,
+                plan: metadata?.plan || "",
+                credits: Number(metadata?.credits) || 0,
+                buyerId: metadata?.buyerId || "",
+                createdAt: new Date(),
+            };
+            
+            console.log(transaction);
+            
+            const newTransaction = await createTransaction(transaction);
+            
+            console.log('transaction done');
+            return NextResponse.json({ message: "OK", transaction: newTransaction });
+        }
+    }catch(error){
+            console.log(error);
     }
     return new Response("", { status: 200 });
 }
