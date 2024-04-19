@@ -31,9 +31,9 @@ const Page = () => {
   const [ error , setError ] = useState('');
 
   useEffect(() => {
-    try{
       
     async function createUser_if_Not_exist() {
+    try{
       if (isSignedIn) {
         const obj: CreateUser = {
           username: user?.username,
@@ -59,12 +59,12 @@ const Page = () => {
           );
         }
       }
-    }
-
-    createUser_if_Not_exist();
     }catch(error){
       console.log(error);
     }
+    }
+
+    createUser_if_Not_exist();
     
   }, [isSignedIn, user]);
   useEffect(()=>{
