@@ -1,6 +1,7 @@
 
-import {Flex, Box, Text, Image, Container,Link} from '@chakra-ui/react'
+import {Flex, Box, Text, Image, Container} from '@chakra-ui/react'
 import { Search } from 'lucide-react';
+import Link from 'next/link';
 
 const Edits = ({ images }: { images: any[] }) => { 
     return (
@@ -17,10 +18,17 @@ const Edits = ({ images }: { images: any[] }) => {
 
         <Flex py={8} wrap={'wrap'} style={{gap:'33px'}}>
         {images.map((i:any) => (
-            <Link key={i.id} href={i.transformation_url} isExternal // Add link and isExternal prop to Link component
+            <Link key={i.id} href={{
+              pathname: `/${i.title}`,
+              query: {
+                original : i.image_url,
+                transformed : i.transformation_url
+              }
+            }} 
               className="group relative rounded-lg overflow-hidden shadow-md w-64 h-64 hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-2"
             >
               <Image
+                
                 src={i.transformation_url}
                 alt={i.title} // Add alt text for accessibility
                 className="w-full h-full object-cover group-hover:scale-110 transition duration-300 ease-in-out"

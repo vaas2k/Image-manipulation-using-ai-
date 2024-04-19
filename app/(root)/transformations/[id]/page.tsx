@@ -55,7 +55,7 @@ const tranformation_configs = [
     {
         name : 'Object Remove',
         description : 'Remove an object from the image',
-        type : 'prompt',
+        type : 'object_remove',
         api : 'null',
         model : 'null',
         link: "object_remove",

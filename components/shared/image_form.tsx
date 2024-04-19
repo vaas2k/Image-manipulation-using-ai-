@@ -23,6 +23,8 @@ import { setUser } from "@/store/slices/userSlice";
 import { imageVal } from "@/types/types";
 import { saveImage } from "@/lib/actions/imageActions";
 import { useCredits } from "@/lib/actions/userActions";
+import axios from 'axios';
+
 
 export const ImageForm = ({ configs }: any) => {
   const { toast } = useToast();
@@ -55,11 +57,34 @@ export const ImageForm = ({ configs }: any) => {
       );
     }
 
-    setTimeout(() => {
+     
+    
+    
+    try{
+      const data = {
+        type : imageState.type,
+        image : selectedImage.image,
+        prompt : imageState.Prompt
+        
+      }
+      const res = await axios.post('http://localhost:3000/api/inferenceApi',data);
+      if(res){
+
+      }else if(!res){
+        setTransforming_img(false);
+        toast({
+          title: "Image Transformation Failed",
+          description: "",
+          duration: 5000,
+          className: "success-toast",
+        });
+      }
+      console.log(res);
+
       dispatch(
         setImage({
           ...imageState,
-          transformation_url: selectedImage.image,
+          transformation_url: res.data,
           width: selectedImage.width,
           height: selectedImage.height,
         })
@@ -71,7 +96,10 @@ export const ImageForm = ({ configs }: any) => {
         duration: 5000,
         className: "success-toast",
       });
-    }, 3000);
+
+    }catch(error){
+      console.log(error);
+    }
     dispatch(
       setUser({
         ...cur_user,
@@ -80,13 +108,13 @@ export const ImageForm = ({ configs }: any) => {
     );
     await useCredits(cur_user._id!,cur_user.credits);
   }
-
+  
   async function saveimagetoDB() {
     setError('');
     if(!imageState.title){setError('title')}
     setSaving_img(true);
     const img: imageVal = {
-      image: imageState.image || selectedImage.image,
+      image: selectedImage.image,
       title: imageState.title,
       type: imageState.type,
       width: imageState.width,
@@ -142,7 +170,7 @@ export const ImageForm = ({ configs }: any) => {
         {error && <Text fontSize={'12px'} color={'tomato'}>{error}</Text>}
       </Stack>
       <Stack py={4}>
-        {configs.type == "fill" && (
+        {configs.type == "filll" && (
           <>
             <Label>Aspect Ratio</Label>
             <Select
@@ -164,9 +192,9 @@ export const ImageForm = ({ configs }: any) => {
           </>
         )}
 
-        {configs.type == "prompt" && (
+        {configs.type == "object_remove" || 'fill' && (
           <>
-            <Label htmlFor="Prompt">{configs.label}</Label>
+            <Label htmlFor="Prompt">{configs.label || 'Enter Prompt'}</Label>
             <Input
               type="text"
               id="Prompt"
@@ -224,7 +252,7 @@ export const ImageForm = ({ configs }: any) => {
       <Stack pb={10} pt={5} gap={6}>
         {!transforming_img ? (
           <Button
-            disabled={selectedImage.image ? false : true}
+            
             onClick={onSubmit}
           >
             Apply Transformation

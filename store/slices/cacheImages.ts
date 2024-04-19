@@ -9,15 +9,7 @@ const Images = createSlice({
   initialState,
   reducers: {
     setAllImages : (state,action)=>{
-       if(!state.images){
-         state.images = action.payload.images;
-       }
-       else{
-        for(let i = 0; i < action.payload.images.length; i++){
-          state.images!.push(action.payload.images[i]);
-        }
-       }
-
+      return action.payload;
     },
     resetCache: (state) => {
         state.images = [];

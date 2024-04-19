@@ -1,30 +1,81 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
+import Replicate from 'replicate';
+import axios from 'axios';
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    const response = await fetch("https://api.replicate.com/v1/predictions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.REPLICATE_API_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // Pinned to a specific version of Stable Diffusion
-        // See https://replicate.com/stability-ai/sdxl
-        version: "2b017d9b67edd2ee1401238df49d75da53c523f36e363881e057f5dc3ed3c5b2",
-  
-        // This is the text prompt that will be submitted by a form on the frontend
-        input: { prompt: req.body.prompt! },
-      }),
-    });
-  
-    if (response.status !== 201) {
-      let error = await response.json();
-      res.statusCode = 500;
-      res.end(JSON.stringify({ detail: error.detail }));
-      return;
+const replicate = new Replicate({
+    auth : process.env.REPLICATE_API_TOKEN!
+});
+
+
+export async function POST (request : Request ) {
+
+    const requestBody = await request.json();
+    console.log(requestBody);
+    
+    if(!requestBody.image){
+       return new NextResponse('Image Missing');
     }
-  
-    const prediction = await response.json();
-    res.statusCode = 201;
-    res.end(JSON.stringify(prediction));
-  }
+    
+    const fill = async () => {
+        return 'fill';
+    }
+
+    const object_remove = async () => {
+      if(!requestBody.image || !requestBody.prompt){return 'Input Missing'}
+
+      const input = {
+        image_path: requestBody.image,
+        objects_to_remove: requestBody.prompt
+    };
+    
+    const output = await replicate.run("sujaykhandekar/object-removal:153b0087c2576ad30d8cbddb35275b387d1a6bf986bda5499948f843f6460faf", { input });
+    console.log(output)
+    return output
+    }
+
+    const bg_remove = async () => {
+      if(!requestBody.image){return 'Image Missing'}
+        const input = {
+            image: requestBody.image
+        };
+        
+        const output = await replicate.run("cjwbw/rembg:fb8af171cfa1616ddcf1242c093f9c46bcada5ad4cf6f2fbe8b81b330ec5c003", { input });
+        console.log(output)
+        return output;
+    }
+    const restore = async () => {
+        return 'resotre';
+    }
+
+    const inImageChanging = async () => {
+      const input = {
+        source_image: requestBody.image,
+        target_prompt: requestBody.prompt
+    };
+    
+    const output = await replicate.run("adirik/masactrl-stable-diffusion-v1-4:4e86d80ab64a8395e7fd327d34fe85d240a3d9e8706b7144864ba981eba3dfa6", { input });
+    console.log(output)
+    return output
+    }
+
+
+    let res: any = null;
+    switch (requestBody.type) {
+      case "fill":
+        res = await inImageChanging();
+        return new NextResponse(res);
+      case "object_remove":
+        res = await object_remove();
+        return new NextResponse(res);
+      case "bg_remove":
+        res = await bg_remove();
+        return new NextResponse(res);
+      case "restore":
+        res = await restore();
+        return new NextResponse(res);
+      default:
+        return new NextResponse("Failed");
+    }
+    
+}

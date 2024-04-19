@@ -19,13 +19,13 @@ import { useAppSelector, useAppDispatch } from "./hooks";
 import { setUser } from "@/store/slices/userSlice";
 import { CommitIcon } from "@radix-ui/react-icons";
 import { getAllImages } from "@/lib/actions/imageActions";
-import { useToast } from "@/components/ui/use-toast";
 
 const Page = () => {
   const dispatch = useAppDispatch();
   const { isSignedIn, user } = useUser();
   const w = useWidth();
   const curr_user = useAppSelector((state) => { return state.userSlice});
+  const curr_images = useAppSelector((state) => { return state.Images});
   let [ images , setImages ] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ error , setError ] = useState('');
@@ -61,7 +61,14 @@ const Page = () => {
 
     createUser_if_Not_exist();
   }, [isSignedIn, user]);
-
+  useEffect(()=>{
+    async function firstImage(){
+      const getImages:any = await getAllImages(images.length);
+      setImages(getImages)
+      
+    }
+    firstImage();
+  },[]);
   const icos = [
     {
       logo: <Image size={w ? "4vh" : "3vh"} />,
@@ -85,6 +92,7 @@ const Page = () => {
     },
   ];
 
+  console.log(images)
   async function loadMoreImages() {
     setLoading(true);
     setError('');
@@ -103,6 +111,8 @@ const Page = () => {
           }
           setImages(newimages);
         }
+
+       
 
       setLoading(false);
       }
