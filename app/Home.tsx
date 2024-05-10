@@ -31,7 +31,9 @@ const Page = () => {
   const [ error , setError ] = useState('');
 
   useEffect(() => {
+      
     async function createUser_if_Not_exist() {
+    try{
       if (isSignedIn) {
         const obj: CreateUser = {
           username: user?.username,
@@ -57,9 +59,13 @@ const Page = () => {
           );
         }
       }
+    }catch(error){
+      console.log(error);
+    }
     }
 
     createUser_if_Not_exist();
+    
   }, [isSignedIn, user]);
   useEffect(()=>{
     async function firstImage(){
