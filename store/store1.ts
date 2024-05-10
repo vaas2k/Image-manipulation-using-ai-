@@ -6,29 +6,29 @@ import userSlice from "./slices/userSlice";
 import imageSlice from "./slices/imageSlice";
 import Images from './slices/cacheImages';
 
-
 const persistConfig = {
-  key : 'root',
+  key: 'root',
   storage,
-  whitelist : ['userSlice']
+  whitelist: ['userSlice']
 }
 
-
-
 const rootReducer = combineReducers({
-  userSlice,imageSlice,Images
-})
+  user: userSlice,
+  image: imageSlice,
+  cacheImages: Images // Assuming Images is a slice with a reducer
+});
 
-const persistedReducer = persistReducer(persistConfig,rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    })
+    }),
 });
 
-const persistor = persistStore(store)
-export type RootState = ReturnType<typeof store.getState>
-export { store , persistor };
+const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof rootReducer>;
+export { store, persistor };
